@@ -1,0 +1,2 @@
+class CreatePartsController < ApplicationController
+end

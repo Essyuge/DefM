@@ -1,0 +1,2 @@
+class CreateCategoriesController < ApplicationController
+end
