@@ -1,2 +1,0 @@
-class CreatePartsController < ApplicationController
-end

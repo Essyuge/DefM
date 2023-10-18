@@ -1,2 +1,0 @@
-class CreateOrdersController < ApplicationController
-end

@@ -1,2 +1,0 @@
-class CreatePart < ApplicationRecord
-end
