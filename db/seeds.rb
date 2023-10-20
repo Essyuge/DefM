@@ -7,56 +7,104 @@
 #   Character.create(name: "Luke", movie: movies.first)
 
 
-
-
+# Seeds for Parts
 parts_data = [
-  { name: "Brake Pad", part_number: "BP-1234", description: "High-quality brake pad for Ford vehicles.", price: 39.99 },
-  { name: "Oil Filter", part_number: "OF-5678", description: "Genuine oil filter for Ford engines.", price: 9.99 },
-  { name: "Spark Plug", part_number: "SP-9876", description: "Set of spark plugs for improved engine performance.", price: 19.99 },
-  { name: "Radiator", part_number: "RAD-4567", description: "Efficient radiator for Ford trucks.", price: 69.99 },
-  { name: "Air Filter", part_number: "AF-2345", description: "Replacement air filter for Ford vehicles.", price: 12.99 },
-  { name: "Tire", part_number: "TIRE-7890", description: "All-season tire for Ford cars.", price: 79.99 },
-  { name: "Transmission Fluid", part_number: "TF-3456", description: "High-quality transmission fluid for Ford transmissions.", price: 14.99 },
-  { name: "Brake Rotor", part_number: "BR-7654", description: "Durable brake rotor for Ford vehicles.", price: 49.99 },
-  { name: "Battery", part_number: "BAT-1235", description: "Powerful battery for Ford trucks.", price: 69.99 },
-  { name: "Exhaust System", part_number: "EX-9087", description: "Stainless steel exhaust system for Ford cars.", price: 199.99 },
-  { name: "Fuel Pump", part_number: "FP-3456", description: "High-performance fuel pump for Ford vehicles.", price: 29.99 },
-  { name: "Oxygen Sensor", part_number: "OS-2345", description: "Precise oxygen sensor for Ford engines.", price: 24.99 },
-  { name: "Cabin Air Filter", part_number: "CAF-6789", description: "Clean cabin air filter for Ford vehicles.", price: 9.99 },
-  { name: "Headlight Bulb", part_number: "HB-5678", description: "Bright headlight bulb for Ford cars.", price: 7.99 },
-  { name: "Wiper Blades", part_number: "WB-9876", description: "Durable wiper blades for Ford vehicles.", price: 12.99 },
-  { name: "Shock Absorber", part_number: "SA-4567", description: "Quality shock absorber for Ford trucks.", price: 44.99 },
-  { name: "Wheel Bearing", part_number: "WB-2345", description: "Long-lasting wheel bearing for Ford cars.", price: 19.99 },
-  { name: "Serpentine Belt", part_number: "SB-7890", description: "Reliable serpentine belt for Ford vehicles.", price: 8.99 },
-  { name: "Water Pump", part_number: "WP-3456", description: "Efficient water pump for Ford engines.", price: 34.99 },
-  { name: "Ball Joint", part_number: "BJ-1235", description: "Sturdy ball joint for Ford trucks.", price: 22.99 },
-  { name: "Thermostat", part_number: "TH-9087", description: "Thermostat for Ford vehicles' cooling system.", price: 6.99 },
-  { name: "Wheel Hub Assembly", part_number: "WHA-3456", description: "Wheel hub assembly for Ford cars.", price: 29.99 },
-  { name: "Control Arm", part_number: "CA-2345", description: "Control arm for Ford vehicles' suspension.", price: 17.99 },
-  { name: "Ignition Coil", part_number: "IC-6789", description: "High-quality ignition coil for Ford engines.", price: 13.99 },
-  { name: "Alternator", part_number: "ALT-5678", description: "Reliable alternator for Ford vehicles.", price: 49.99 },
-  { name: "Starter Motor", part_number: "SM-9876", description: "Starter motor for Ford cars.", price: 39.99 },
-  { name: "Tie Rod End", part_number: "TRE-4567", description: "Tie rod end for Ford trucks.", price: 16.99 },
+  { name: "Brake Pad", part_number: "BP-1234", description: "High-quality brake pad for Ford vehicles.", price: 39.99, category: Category.find_by(name: "Brakes") },
+  { name: "Oil Filter", part_number: "OF-5678", description: "Genuine oil filter for Ford engines.", price: 9.99, category: Category.find_by(name: "Filters") },
+  { name: "Spark Plug", part_number: "SP-9876", description: "Set of spark plugs for improved engine performance.", price: 19.99, category: Category.find_by(name: "Ignition") },
+  { name: "Brake Pad", part_number: "BP-1234", description: "High-quality brake pad for Ford vehicles.", price: 39.99, category: Category.find_by(name: "Brakes") },
+  { name: "Oil Filter", part_number: "OF-5678", description: "Genuine oil filter for Ford engines.", price: 9.99, category: Category.find_by(name: "Filters") },
+  { name: "Spark Plug", part_number: "SP-9876", description: "Set of spark plugs for improved engine performance.", price: 19.99, category: Category.find_by(name: "Ignition") },
+  { name: "Brake Pad", part_number: "BP-1234", description: "High-quality brake pad for Ford vehicles.", price: 39.99, category: Category.find_by(name: "Brakes") },
+  { name: "Oil Filter", part_number: "OF-5678", description: "Genuine oil filter for Ford engines.", price: 9.99, category: Category.find_by(name: "Filters") },
+  { name: "Spark Plug", part_number: "SP-9876", description: "Set of spark plugs for improved engine performance.", price: 19.99, category: Category.find_by(name: "Ignition") },# Include parts for other categories here
 ]
 
-# Create image seeds for each part
 parts_data.each do |part_data|
-  part = Part.find_or_create_by(name: part_data[:name]) do |p|
-    p.part_number = part_data[:part_number]
-    p.description = part_data[:description]
-    p.price = part_data[:price]
-  end
-
-  # Create the image associated with the part
-  Image.create(
-    title: "#{part_data[:name]} Image",
-    description: "Image of the #{part_data[:name]} for Ford vehicles.",
-    file_url: "https://example.com/images/#{part_data[:name].downcase.gsub(' ', '-')}.jpg",
-    part: part
-  )
+  category = Category.find_by(name: part_data[:category][:name])
+  Part.create(part_data.merge(category: category))
 end
 
-puts 'Sample images have been seeded.'
+images_data = [
+  { title: "Brake Pad Image", description: "Image of the Brake Pad for Ford vehicles.", file_url: "https://example.com/images/brake-pad.jpg", part: Part.find_by(name: "Brake Pad") },
+  { title: "Oil Filter Image", description: "Image of the Oil Filter for Ford engines.", file_url: "https://example.com/images/oil-filter.jpg", part: Part.find_by(name: "Oil Filter") },
+  { title: "Spark Plug Image", description: "Image of the Spark Plug for improved engine performance.", file_url: "https://example.com/images/spark-plug.jpg", part: Part.find_by(name: "Spark Plug") },
+  { title: "Brake Pad Image", description: "Image of the Brake Pad for Ford vehicles.", file_url: "https://example.com/images/brake-pad.jpg", part: Part.find_by(name: "Brake Pad") },
+  { title: "Oil Filter Image", description: "Image of the Oil Filter for Ford engines.", file_url: "https://example.com/images/oil-filter.jpg", part: Part.find_by(name: "Oil Filter") },
+  { title: "Spark Plug Image", description: "Image of the Spark Plug for improved engine performance.", file_url: "https://example.com/images/spark-plug.jpg", part: Part.find_by(name: "Spark Plug") },
+  { title: "Brake Pad Image", description: "Image of the Brake Pad for Ford vehicles.", file_url: "https://example.com/images/brake-pad.jpg", part: Part.find_by(name: "Brake Pad") },
+  { title: "Oil Filter Image", description: "Image of the Oil Filter for Ford engines.", file_url: "https://example.com/images/oil-filter.jpg", part: Part.find_by(name: "Oil Filter") },
+  { title: "Spark Plug Image", description: "Image of the Spark Plug for improved engine performance.", file_url: "https://example.com/images/spark-plug.jpg", part: Part.find_by(name: "Spark Plug") },
+  # Include images for other parts here
+]
+
+images_data.each do |image_data|
+  part = Part.find_by(name: image_data[:part][:name])
+  Image.create(image_data.merge(part: part))
+end
+
+categories_data = [
+  { name: "Brakes" },
+  { name: "Filters" },
+  { name: "Ignition" },
+  # Include other categories here
+]
+
+categories_data.each do |category_data|
+  Category.create(category_data)
+end
+
+
+# parts_data = [
+#   { name: "Brake Pad", part_number: "BP-1234", description: "High-quality brake pad for Ford vehicles.", price: 39.99 },
+#   { name: "Oil Filter", part_number: "OF-5678", description: "Genuine oil filter for Ford engines.", price: 9.99 },
+#   { name: "Spark Plug", part_number: "SP-9876", description: "Set of spark plugs for improved engine performance.", price: 19.99 },
+#   { name: "Radiator", part_number: "RAD-4567", description: "Efficient radiator for Ford trucks.", price: 69.99 },
+#   { name: "Air Filter", part_number: "AF-2345", description: "Replacement air filter for Ford vehicles.", price: 12.99 },
+#   { name: "Tire", part_number: "TIRE-7890", description: "All-season tire for Ford cars.", price: 79.99 },
+#   { name: "Transmission Fluid", part_number: "TF-3456", description: "High-quality transmission fluid for Ford transmissions.", price: 14.99 },
+#   { name: "Brake Rotor", part_number: "BR-7654", description: "Durable brake rotor for Ford vehicles.", price: 49.99 },
+#   { name: "Battery", part_number: "BAT-1235", description: "Powerful battery for Ford trucks.", price: 69.99 },
+#   { name: "Exhaust System", part_number: "EX-9087", description: "Stainless steel exhaust system for Ford cars.", price: 199.99 },
+#   { name: "Fuel Pump", part_number: "FP-3456", description: "High-performance fuel pump for Ford vehicles.", price: 29.99 },
+#   { name: "Oxygen Sensor", part_number: "OS-2345", description: "Precise oxygen sensor for Ford engines.", price: 24.99 },
+#   { name: "Cabin Air Filter", part_number: "CAF-6789", description: "Clean cabin air filter for Ford vehicles.", price: 9.99 },
+#   { name: "Headlight Bulb", part_number: "HB-5678", description: "Bright headlight bulb for Ford cars.", price: 7.99 },
+#   { name: "Wiper Blades", part_number: "WB-9876", description: "Durable wiper blades for Ford vehicles.", price: 12.99 },
+#   { name: "Shock Absorber", part_number: "SA-4567", description: "Quality shock absorber for Ford trucks.", price: 44.99 },
+#   { name: "Wheel Bearing", part_number: "WB-2345", description: "Long-lasting wheel bearing for Ford cars.", price: 19.99 },
+#   { name: "Serpentine Belt", part_number: "SB-7890", description: "Reliable serpentine belt for Ford vehicles.", price: 8.99 },
+#   { name: "Water Pump", part_number: "WP-3456", description: "Efficient water pump for Ford engines.", price: 34.99 },
+#   { name: "Ball Joint", part_number: "BJ-1235", description: "Sturdy ball joint for Ford trucks.", price: 22.99 },
+#   { name: "Thermostat", part_number: "TH-9087", description: "Thermostat for Ford vehicles' cooling system.", price: 6.99 },
+#   { name: "Wheel Hub Assembly", part_number: "WHA-3456", description: "Wheel hub assembly for Ford cars.", price: 29.99 },
+#   { name: "Control Arm", part_number: "CA-2345", description: "Control arm for Ford vehicles' suspension.", price: 17.99 },
+#   { name: "Ignition Coil", part_number: "IC-6789", description: "High-quality ignition coil for Ford engines.", price: 13.99 },
+#   { name: "Alternator", part_number: "ALT-5678", description: "Reliable alternator for Ford vehicles.", price: 49.99 },
+#   { name: "Starter Motor", part_number: "SM-9876", description: "Starter motor for Ford cars.", price: 39.99 },
+#   { name: "Tie Rod End", part_number: "TRE-4567", description: "Tie rod end for Ford trucks.", price: 16.99 },
+# ]
+
+# # Create image seeds for each part
+# parts_data.each do |part_data|
+#   part = Part.find_or_create_by(name: part_data[:name]) do |p|
+#     p.part_number = part_data[:part_number]
+#     p.description = part_data[:description]
+#     p.price = part_data[:price]
+#   end
+
+#   # Check if the part was successfully created or found
+#   if part.persisted?
+#     image = Image.create(
+#       title: "#{part_data[:name]} Image",
+#       description: "Image of the #{part_data[:name]} for Ford vehicles.",
+#       file_url: "https://example.com/images/#{part_data[:name].downcase.gsub(' ', '-')}.jpg",
+#       part: part
+#     )
+#   else
+#     puts "Failed to create or find the part for: #{part_data[:name]}"
+#   end
+# end
 
 
   users_data = [
@@ -160,42 +208,42 @@ puts 'Sample images have been seeded.'
   puts "Additional sample users data has been seeded."
 
   
-categories = [
-  { name: 'Engine Parts', description: 'Parts related to Ford engines' },
-  { name: 'Transmission Parts', description: 'Transmission components for Ford vehicles' },
-  { name: 'Suspension Parts', description: 'Ford suspension system components' },
-  { name: 'Brake Parts', description: 'Parts for Ford braking systems' },
-  { name: 'Electrical Parts', description: 'Ford electrical system components' },
-  { name: 'Exhaust System Parts', description: 'Exhaust system components for Ford vehicles' },
-  { name: 'Fuel System Parts', description: 'Components related to the fuel system in Ford vehicles' },
-  { name: 'Steering Components', description: 'Steering-related parts for Ford vehicles' },
-  { name: 'Cooling System Parts', description: 'Parts for Ford vehicle cooling systems' },
-  { name: 'Air Intake and Filters', description: 'Air intake and filter components for Ford vehicles' },
-  { name: 'Interior Accessories', description: 'Accessories for the interior of Ford vehicles' },
-  { name: 'Exterior Accessories', description: 'Accessories for the exterior of Ford vehicles' },
-  { name: 'Lighting and Bulbs', description: 'Lighting and bulb components for Ford vehicles' },
-  { name: 'Wheels and Tires', description: 'Wheels and tires for Ford vehicles' },
-  { name: 'Ignition System Parts', description: 'Ignition system components for Ford vehicles' },
-  { name: 'Heating and Air Conditioning', description: 'Heating and A/C components for Ford vehicles' },
-  { name: 'Belts and Hoses', description: 'Belts and hoses for Ford vehicles' },
-  { name: 'Filters and Fluids', description: 'Filters and fluids for Ford vehicles' },
-  { name: 'Emission Control Parts', description: 'Emission control components for Ford vehicles' },
-  { name: 'Body and Frame Components', description: 'Body and frame parts for Ford vehicles' },
-  { name: 'Fuel Injection System Parts', description: 'Components for fuel injection systems in Ford vehicles' },
-  { name: 'Drivetrain Components', description: 'Drivetrain parts for Ford vehicles' },
-  { name: 'Sensors and Switches', description: 'Sensors and switches for Ford vehicles' },
-  { name: 'Gaskets and Seals', description: 'Gaskets and seals for Ford vehicles' },
-  { name: 'Alternators and Starters', description: 'Alternators and starters for Ford vehicles' },
-  { name: 'Radiators and Cooling Fans', description: 'Radiators and cooling fans for Ford vehicles' },
-  { name: 'A/C Compressors and Condensers', description: 'A/C compressors and condensers for Ford vehicles' },
-  { name: 'Transmission Fluids and Oils', description: 'Transmission fluids and oils for Ford vehicles' },
-  { name: 'Timing Belts and Chains', description: 'Timing belts and chains for Ford vehicles' },
-  { name: 'Engine Mounts and Bushings', description: 'Engine mounts and bushings for Ford vehicles' }
-]
+# categories = [
+#   { name: 'Engine Parts', description: 'Parts related to Ford engines' },
+#   { name: 'Transmission Parts', description: 'Transmission components for Ford vehicles' },
+#   { name: 'Suspension Parts', description: 'Ford suspension system components' },
+#   { name: 'Brake Parts', description: 'Parts for Ford braking systems' },
+#   { name: 'Electrical Parts', description: 'Ford electrical system components' },
+#   { name: 'Exhaust System Parts', description: 'Exhaust system components for Ford vehicles' },
+#   { name: 'Fuel System Parts', description: 'Components related to the fuel system in Ford vehicles' },
+#   { name: 'Steering Components', description: 'Steering-related parts for Ford vehicles' },
+#   { name: 'Cooling System Parts', description: 'Parts for Ford vehicle cooling systems' },
+#   { name: 'Air Intake and Filters', description: 'Air intake and filter components for Ford vehicles' },
+#   { name: 'Interior Accessories', description: 'Accessories for the interior of Ford vehicles' },
+#   { name: 'Exterior Accessories', description: 'Accessories for the exterior of Ford vehicles' },
+#   { name: 'Lighting and Bulbs', description: 'Lighting and bulb components for Ford vehicles' },
+#   { name: 'Wheels and Tires', description: 'Wheels and tires for Ford vehicles' },
+#   { name: 'Ignition System Parts', description: 'Ignition system components for Ford vehicles' },
+#   { name: 'Heating and Air Conditioning', description: 'Heating and A/C components for Ford vehicles' },
+#   { name: 'Belts and Hoses', description: 'Belts and hoses for Ford vehicles' },
+#   { name: 'Filters and Fluids', description: 'Filters and fluids for Ford vehicles' },
+#   { name: 'Emission Control Parts', description: 'Emission control components for Ford vehicles' },
+#   { name: 'Body and Frame Components', description: 'Body and frame parts for Ford vehicles' },
+#   { name: 'Fuel Injection System Parts', description: 'Components for fuel injection systems in Ford vehicles' },
+#   { name: 'Drivetrain Components', description: 'Drivetrain parts for Ford vehicles' },
+#   { name: 'Sensors and Switches', description: 'Sensors and switches for Ford vehicles' },
+#   { name: 'Gaskets and Seals', description: 'Gaskets and seals for Ford vehicles' },
+#   { name: 'Alternators and Starters', description: 'Alternators and starters for Ford vehicles' },
+#   { name: 'Radiators and Cooling Fans', description: 'Radiators and cooling fans for Ford vehicles' },
+#   { name: 'A/C Compressors and Condensers', description: 'A/C compressors and condensers for Ford vehicles' },
+#   { name: 'Transmission Fluids and Oils', description: 'Transmission fluids and oils for Ford vehicles' },
+#   { name: 'Timing Belts and Chains', description: 'Timing belts and chains for Ford vehicles' },
+#   { name: 'Engine Mounts and Bushings', description: 'Engine mounts and bushings for Ford vehicles' }
+# ]
 
-Category.create(categories)
+# Category.create(categories)
 
-puts 'Ford parts categories have been seeded.'
+# puts 'Ford parts categories have been seeded.'
 
 
 
